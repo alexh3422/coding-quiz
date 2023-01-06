@@ -82,6 +82,14 @@ const questions = [
     nextQuestion()
   })
   
+  document.getElementById('answer1').addEventListener('click', selectAnswer)
+  document.getElementById('answer2').addEventListener('click', selectAnswer)
+  document.getElementById('answer3').addEventListener('click', selectAnswer)
+  document.getElementById('answer4').addEventListener('click', selectAnswer)
+   
+  
+
+  
   let interval;
   let timeLeft = 60;
   let score = 0;
@@ -119,6 +127,7 @@ const questions = [
     if (startBtn.innerText === 'Start') {
       startBtn.innerText = 'Restart'
     }
+    //  answerButtonsElement.classList.remove('hide')
       shuffledQuestions = questions.sort(() => Math.random() - .5)
       currentQuestionIndex = 0
       questionContainerElement.classList.remove('hide')
@@ -167,24 +176,36 @@ const questions = [
   function showQuestion() {
     const currentQuestion = shuffledQuestions[currentQuestionIndex]
     const { question, answers } = currentQuestion
-    questionElement.innerText = question
-    answerButtonsElement.innerHTML = ''
+ 
+  
   
     questionElement.textContent = 
     `Question ${currentQuestionIndex + 1}/${questions.length}- ${shuffledQuestions[currentQuestionIndex].question}`;
+
+    document.getElementById('answer1').innerText = shuffledQuestions[currentQuestionIndex].answers[0].text;
+    document.getElementById('answer1').dataset = shuffledQuestions[currentQuestionIndex].answers[0].correct;
+    document.getElementById('answer2').innerText = shuffledQuestions[currentQuestionIndex].answers[1].text;
+    document.getElementById('answer2').dataset = shuffledQuestions[currentQuestionIndex].answers[1].correct;
+    document.getElementById('answer3').innerText = shuffledQuestions[currentQuestionIndex].answers[2].text;
+    document.getElementById('answer3').dataset = shuffledQuestions[currentQuestionIndex].answers[2].correct;
+    document.getElementById('answer4').innerText = shuffledQuestions[currentQuestionIndex].answers[3].text;
+    document.getElementById('answer4').dataset = shuffledQuestions[currentQuestionIndex].answers[3].correct;
+    // currentQuestion.answers.forEach(answer => {
+    //   // const button = document.createElement('button')
+    //   // button.innerText = answer.text
+    //   // button.classList.add('btn')
+      // if (answer.correct) {
+      //   button.dataset.correct = answer.correct
+      // }
+      // button.addEventListener('click', selectAnswer)
+      // answerButtonsElement.appendChild(button)
+      answerButtonsElement.querySelectorAll('.answer-button').forEach(button => {
+        button.disabled = false
+      })
+    }
+
   
-    currentQuestion.answers.forEach(answer => {
-      const button = document.createElement('button')
-      button.innerText = answer.text
-      button.classList.add('btn')
-      if (answer.correct) {
-        button.dataset.correct = answer.correct
-      }
-      button.addEventListener('click', selectAnswer)
-      answerButtonsElement.appendChild(button)
-    })
   
-  }
   
   //called when the user clicks on an answer that is incorrect. 10 seconds are taken away
   function subtractTime() {
@@ -197,7 +218,13 @@ const questions = [
     
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
+    alert(correct)
     setStatusClass(document.body, correct)
+    answerButtonsElement.querySelectorAll('.answer-button').forEach(button => {
+      button.disabled = true
+    })
+  
+    
   
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
    
@@ -209,25 +236,31 @@ const questions = [
     }
   
   
-    if (selectedButton.dataset = correct) {
+    if (correct) {
       score += 1;
       scoreElement.textContent = "Score: " + score;
       document.getElementById("nextBtn").disabled = false;
+    
 
     
     }
     else {
       subtractTime()
       document.getElementById("nextBtn").disabled = false;
+     
 
   
       // Array.from(answerButtonsElement.children).forEach(button => {
       //   setStatusClass(button, button.dataset.correct)
       // })
     }
-  
-  
+
   }
+
+
+
+
+  
   
   
   //sets the status of the answer buttons (color for right and wrong)
@@ -253,12 +286,7 @@ const questions = [
   function resetState() {
     clearStatusClass(document.body)
     document.getElementById("nextBtn").disabled = true;
-
-    while (answerButtonsElement.firstChild) {
-      answerButtonsElement.removeChild
-      (answerButtonsElement.firstChild)
-    }
-  }
+   }
   
   
   
