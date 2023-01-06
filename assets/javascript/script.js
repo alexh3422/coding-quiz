@@ -72,7 +72,7 @@ const questions = [
   const questionElement = document.getElementById('question')
   const answerButtonsElement = document.getElementById('answer-buttons')
   const scoreElement = document.getElementById('score')
-  const highScoreElement = document.getElementById('high-score')
+  const highScoreElement = document.getElementById('highScore')
   let shuffledQuestions, currentQuestionIndex
   
   
@@ -88,12 +88,18 @@ const questions = [
   document.getElementById('answer4').addEventListener('click', selectAnswer)
    
   
-
+  highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + localStorage.getItem('initials')
   
   let interval;
   let timeLeft = 60;
   let score = 0;
-  let highScore = 0
+  let highScore = 0;
+  let initials = 'N/A'
+
+  localStorage.setItem('highScore', highScore)
+  localStorage.setItem('initials', initials)
+
+  highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials')
   
   
   
@@ -151,14 +157,16 @@ const questions = [
     // Quiz is complete
     if (timeLeft < 0) {
     resetState()
-    alert('Congratulations, you have completed the quiz! Your final score is ' + score + ' out of 7! With ' + timeLeft + ' seconds remaining!')
+    alert('You ran out of time! Your final score is ' + score + ' out of 7! Use the form below to submit your score! Or click the start button to try again!')
     startBtn.innerText = 'Start'
     startBtn.classList.remove('hide')
     questionContainerElement.classList.add('hide')
     nextBtn.classList.add('hide')
-  
+    updateHighScore()  
     timerReset()
     clearInterval(interval)
+    initialsForm.classList.remove('hide')
+    
  
  
    
@@ -166,13 +174,17 @@ const questions = [
     }
     else {
       resetState()
+      alert('Congratulations, you have completed the quiz! Your final score is ' + score + ' out of 7! With ' + timeLeft + ' seconds remaining! Use the form below to submit your score! Or click the start button to try again!')
     startBtn.innerText = 'Restart'
     startBtn.classList.remove('hide')
     questionContainerElement.classList.add('hide')
+    initialsForm.classList.remove('hide')
+    updateHighScore()
     // nextBtn.classList.add('hide')
  
     timerReset()
     clearInterval(interval)
+
    
     return
   }}
@@ -290,59 +302,44 @@ const questions = [
     document.getElementById("nextBtn").disabled = true;
    }
   
-  
-  
-//   // Save the high score
-// function saveHighScore(score) {
-//   // Check if the high score is already stored
-//   if (localStorage.getItem("highScore")) {
-//     // If it is, check if the new score is higher
-//     if (score > localStorage.getItem("highScore")) {
-//       // If it is, save the new high score
-//       localStorage.setItem("highScore", score);
-//     }
-//   } else {
-//     // If there is no high score stored, save the new score as the high score
-//     localStorage.setItem("highScore", score);
-//   }
-// }
+  function updateHighScore() {
 
-// // Get the high score
-// function getHighScore() {
-//   // Check if the high score is stored
-//   if (localStorage.getItem("highScore")) {
-//     // If it is, return the high score
-//     return localStorage.getItem("highScore");
-//   } else {
-//     // If it is not, return 0
-//     return 0;
-//   }
-// }
+
+    if (score > highScore) {
+      highScore = score
+
+    }
+
+    if (highScore > localStorage.getItem("highScore")) {
+      localStorage.setItem("highScore", score);
+    }
+  }
+  
+  
+  const initialsForm = document.getElementById('initials-form')
+  const initialsInput = document.getElementById('initials')
+  
+  initialsForm.addEventListener('submit', handleFormSubmit)
+
+
 
   
+  function handleFormSubmit(event) {
+    event.preventDefault()
+    let initials = initialsInput.value
+    // localStorage.setItem('highScore', highScore)
+    localStorage.setItem('initials', initials)
+    displayHighScore()
+  }
+
+
+  function displayHighScore() {
+    highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials')
+
+  }
   
+    
+
+    
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
