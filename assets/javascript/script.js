@@ -301,7 +301,7 @@ const questions = [
     }
     //stores highest score to local storage by checking if the current score is higher than the stored high score
     if (highScore > localStorage.getItem("highScore")) {
-      localStorage.setItem("highScore", score);
+      localStorage.setItem("highScore");
     }
   }
   
@@ -324,9 +324,13 @@ const questions = [
 
   //function that is called after clicking submit to display the high score
   function displayHighScore() {
-    highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials')
-
-  }
+    if (localStorage.getItem('highScore') !== null && localStorage.getItem('initials') !== null) {
+      highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials');
+    } else {
+      highScoreElement.textContent = 'No high score set yet';
+    }
+    }
+  
   
     
 
