@@ -328,7 +328,7 @@ const questions = [
   if (localStorage.getItem('highScore') !== null && localStorage.getItem('initials') !== null) {
     highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials');
   } else {
-    highScoreElement.textContent = 'N/A';
+    highScoreElement.textContent = 'High Score: ';
   }
    }
   
