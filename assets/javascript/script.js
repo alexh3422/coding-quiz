@@ -93,11 +93,9 @@ const questions = [
   let interval;
   let timeLeft = 60;
   let score = 0;
-  let highScore = 0;
-  let initials = 'N/A'
+  let highScore = ''
+  let initials = ''
 
-  localStorage.setItem('highScore', highScore)
-  localStorage.setItem('initials', initials)
 
   highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials')
   
@@ -114,7 +112,7 @@ const questions = [
     if (timeLeft < 0) {
       clearInterval(interval);
       document.getElementById('timer').innerHTML = 'Time: 0 seconds remaining';
-      alert("You're out of time!");
+     
       endQuiz()
     }
   }, 1000); // 1000ms = 1s
@@ -154,7 +152,7 @@ const questions = [
   }
   
   function endQuiz() {
-    // Quiz is complete
+    // Quiz is complete will reset timer, update high score, alrt the user of their score and time left, and show the form to submit their score
     if (timeLeft < 0) {
     resetState()
     alert('You ran out of time! Your final score is ' + score + ' out of 7! Use the form below to submit your score! Or click the start button to try again!')
@@ -197,7 +195,7 @@ const questions = [
   
     questionElement.textContent = 
     `Question ${currentQuestionIndex + 1}/${questions.length}- ${shuffledQuestions[currentQuestionIndex].question}`;
-
+    //assigning the answers to the buttons as well as dataset telling whether the answer is true or false
     document.getElementById('answer1').innerText = shuffledQuestions[currentQuestionIndex].answers[0].text;
     document.getElementById('answer1').dataset.correct = shuffledQuestions[currentQuestionIndex].answers[0].correct;
     document.getElementById('answer2').innerText = shuffledQuestions[currentQuestionIndex].answers[1].text;
@@ -206,15 +204,7 @@ const questions = [
     document.getElementById('answer3').dataset.correct = shuffledQuestions[currentQuestionIndex].answers[2].correct;
     document.getElementById('answer4').innerText = shuffledQuestions[currentQuestionIndex].answers[3].text;
     document.getElementById('answer4').dataset.correct = shuffledQuestions[currentQuestionIndex].answers[3].correct;
-    // currentQuestion.answers.forEach(answer => {
-    //   // const button = document.createElement('button')
-    //   // button.innerText = answer.text
-    //   // button.classList.add('btn')
-      // if (answer.correct) {
-      //   button.dataset.correct = answer.correct
-      // }
-      // button.addEventListener('click', selectAnswer)
-      // answerButtonsElement.appendChild(button)
+    //enables the answer buttons after the next question is shown
       document.getElementById('answer1').disabled = false
       document.getElementById('answer2').disabled = false
       document.getElementById('answer3').disabled = false
@@ -238,7 +228,7 @@ const questions = [
     const answerIsCorrect = selectedButton.dataset.correct === 'true'
   
     setStatusClass(document.body, answerIsCorrect)
-
+    //disables answer buttons after an answer is selected so that the user can't change their answer
     document.getElementById('answer1').disabled = true
     document.getElementById('answer2').disabled = true
     document.getElementById('answer3').disabled = true
@@ -256,13 +246,13 @@ const questions = [
       clearInterval(interval)
     }
   
-  
+    //adds 1 to the score if the answer is correct
     if (answerIsCorrect) {
       score += 1;
       scoreElement.textContent = "Score: " + score;
       document.getElementById("nextBtn").disabled = false;
     
-    }
+    } //subtracts 10 seconds from the timer if the answer is incorrect
     else {
       subtractTime()
       document.getElementById("nextBtn").disabled = false;
@@ -301,7 +291,7 @@ const questions = [
     clearStatusClass(document.body)
     document.getElementById("nextBtn").disabled = true;
    }
-  
+  //updates the high score
   function updateHighScore() {
 
 
@@ -309,7 +299,7 @@ const questions = [
       highScore = score
 
     }
-
+    //stores highest score to local storage by checking if the current score is higher than the stored high score
     if (highScore > localStorage.getItem("highScore")) {
       localStorage.setItem("highScore", score);
     }
@@ -323,7 +313,7 @@ const questions = [
 
 
 
-  
+  // form to submit initials that will automatically update high score with their initials after clicking submit
   function handleFormSubmit(event) {
     event.preventDefault()
     let initials = initialsInput.value
@@ -332,7 +322,7 @@ const questions = [
     displayHighScore()
   }
 
-
+  //function that is called after clicking submit to display the high score
   function displayHighScore() {
     highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials')
 
