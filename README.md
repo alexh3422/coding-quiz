@@ -26,4 +26,4 @@ https://alexh3422.github.io/coding-quiz/
 
 
 
-<img width="1647" alt="Screenshot of coding quiz website" https://user-images.githubusercontent.com/115325648/210949417-6462e236-ac3f-4cef-896c-d8b6612227e7.png">
+<img width="1647" alt="Screenshot of coding quiz website" src="https://user-images.githubusercontent.com/115325648/210949613-a1faa559-7d51-43e0-ba72-80d151fa3a73.png">
