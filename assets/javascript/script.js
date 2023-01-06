@@ -101,6 +101,7 @@ const questions = [
       clearInterval(interval);
       document.getElementById('timer').innerHTML = 'Time: 0 seconds remaining';
       alert("You're out of time!");
+      endQuiz()
     }
   }, 1000); // 1000ms = 1s
   }
@@ -121,32 +122,47 @@ const questions = [
       shuffledQuestions = questions.sort(() => Math.random() - .5)
       currentQuestionIndex = 0
       questionContainerElement.classList.remove('hide')
+      nextBtn.classList.remove('hide')
       score = 0
       scoreElement.textContent = 'Score: ' + score
       timerReset()
-      updateHighScore()
       nextQuestion()
       //nextQuestion()
     }
   
   function nextQuestion() {
     if (currentQuestionIndex === shuffledQuestions.length) {
-      // Quiz is complete
-      alert('Congratulations, you have completed the quiz! Your final score is ' + score + ' out of 7! With ' + timeLeft + ' seconds remaining!')
-      startBtn.innerText = 'Restart'
-      startBtn.classList.remove('hide')
-      questionContainerElement.classList.add('hide')
-      nextBtn.classList.add('hide')
-      updateHighScore()
-      timerReset()
-      clearInterval(interval)
-     
-      return
+      (endQuiz())
     }
     resetState()
     showQuestion(shuffledQuestions[currentQuestionIndex])
   }
   
+  function endQuiz() {
+    // Quiz is complete
+    if (timeLeft < 0) {
+    alert('Congratulations, you have completed the quiz! Your final score is ' + score + ' out of 7! With ' + timeLeft + ' seconds remaining!')
+    startBtn.innerText = 'Start'
+    startBtn.classList.remove('hide')
+    questionContainerElement.classList.add('hide')
+    nextBtn.classList.add('hide')
+    updateHighScore()
+    timerReset()
+    clearInterval(interval)
+   
+    return
+    }
+    else {
+    startBtn.innerText = 'Restart'
+    startBtn.classList.remove('hide')
+    questionContainerElement.classList.add('hide')
+    // nextBtn.classList.add('hide')
+    updateHighScore()
+    timerReset()
+    clearInterval(interval)
+   
+    return
+  }}
   //showing the question and answers
   function showQuestion() {
     const currentQuestion = shuffledQuestions[currentQuestionIndex]
@@ -184,7 +200,7 @@ const questions = [
     setStatusClass(document.body, correct)
   
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
-      nextBtn.classList.remove('hide')
+   
     } else {
       startBtn.innerText = 'Restart'
       startBtn.classList.remove('hide')
@@ -196,10 +212,14 @@ const questions = [
     if (selectedButton.dataset = correct) {
       score += 1;
       scoreElement.textContent = "Score: " + score;
-      nextBtn.classList.remove('hide')
+      document.getElementById("nextBtn").disabled = false;
+
+    
     }
     else {
       subtractTime()
+      document.getElementById("nextBtn").disabled = false;
+
   
       // Array.from(answerButtonsElement.children).forEach(button => {
       //   setStatusClass(button, button.dataset.correct)
@@ -232,7 +252,8 @@ const questions = [
   
   function resetState() {
     clearStatusClass(document.body)
-    nextBtn.classList.add('hide')
+    document.getElementById("nextBtn").disabled = true;
+
     while (answerButtonsElement.firstChild) {
       answerButtonsElement.removeChild
       (answerButtonsElement.firstChild)
@@ -241,13 +262,33 @@ const questions = [
   
   
   
-  function updateHighScore() {
-    if (score > highScore) {
-      highScore = score
-    }
-    highScoreElement.textContent = 'High Score: ' + highScore
-    console.log(highScore)
-  }
+//   // Save the high score
+// function saveHighScore(score) {
+//   // Check if the high score is already stored
+//   if (localStorage.getItem("highScore")) {
+//     // If it is, check if the new score is higher
+//     if (score > localStorage.getItem("highScore")) {
+//       // If it is, save the new high score
+//       localStorage.setItem("highScore", score);
+//     }
+//   } else {
+//     // If there is no high score stored, save the new score as the high score
+//     localStorage.setItem("highScore", score);
+//   }
+// }
+
+// // Get the high score
+// function getHighScore() {
+//   // Check if the high score is stored
+//   if (localStorage.getItem("highScore")) {
+//     // If it is, return the high score
+//     return localStorage.getItem("highScore");
+//   } else {
+//     // If it is not, return 0
+//     return 0;
+//   }
+// }
+
   
   
   

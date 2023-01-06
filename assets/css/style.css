@@ -19,7 +19,7 @@
 }
 
 body {
-    background-color: #136854;
+    background-color: white;
 }
 
 main {
@@ -138,6 +138,10 @@ main {
 
 .btn:hover {
  border-color: 5px black;
+}
+
+.btn:disabled {
+    opacity: 0.5;
 }
 
 .btn-correct {
