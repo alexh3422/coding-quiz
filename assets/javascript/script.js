@@ -96,9 +96,8 @@ const questions = [
   let highScore = ''
   let initials = ''
 
+  displayHighScore()
 
-  highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials')
-  
   
   
   // declaring timer
@@ -136,6 +135,7 @@ const questions = [
       currentQuestionIndex = 0
       questionContainerElement.classList.remove('hide')
       nextBtn.classList.remove('hide')
+      nextBtn.innerText = 'Next'
       score = 0
       scoreElement.textContent = 'Score: ' + score
       timerReset()
@@ -155,7 +155,7 @@ const questions = [
     // Quiz is complete will reset timer, update high score, alrt the user of their score and time left, and show the form to submit their score
     if (timeLeft < 0) {
     resetState()
-    alert('You ran out of time! Your final score is ' + score + ' out of 7! Use the form below to submit your score! Or click the start button to try again!')
+    alert('You ran out of time! Click the start button to try again!')
     startBtn.innerText = 'Start'
     startBtn.classList.remove('hide')
     questionContainerElement.classList.add('hide')
@@ -172,8 +172,8 @@ const questions = [
     }
     else {
       resetState()
-      alert('Congratulations, you have completed the quiz! Your final score is ' + score + ' out of 7! With ' + timeLeft + ' seconds remaining! Use the form below to submit your score! Or click the start button to try again!')
-    startBtn.innerText = 'Restart'
+      alert('Congratulations, you have completed the quiz! Your final score is ' + score + ' out of 7! With ' + timeLeft + ' seconds remaining! Use the form below to save your score! Or click the start button to try again!')
+    startBtn.innerText = 'Start'
     startBtn.classList.remove('hide')
     questionContainerElement.classList.add('hide')
     initialsForm.classList.remove('hide')
@@ -317,19 +317,20 @@ const questions = [
   function handleFormSubmit(event) {
     event.preventDefault()
     let initials = initialsInput.value
-    // localStorage.setItem('highScore', highScore)
+    localStorage.setItem('highScore', highScore)
     localStorage.setItem('initials', initials)
     displayHighScore()
   }
 
   //function that is called after clicking submit to display the high score
   function displayHighScore() {
-    if (localStorage.getItem('highScore') !== null && localStorage.getItem('initials') !== null) {
-      highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials');
-    } else {
-      highScoreElement.textContent = 'No high score set yet';
-    }
-    }
+   
+  if (localStorage.getItem('highScore') !== null && localStorage.getItem('initials') !== null) {
+    highScoreElement.textContent = 'High Score: ' + localStorage.getItem('highScore') + ' by ' + localStorage.getItem('initials');
+  } else {
+    highScoreElement.textContent = 'N/A';
+  }
+   }
   
   
     
