@@ -150,23 +150,27 @@ const questions = [
   function endQuiz() {
     // Quiz is complete
     if (timeLeft < 0) {
+    resetState()
     alert('Congratulations, you have completed the quiz! Your final score is ' + score + ' out of 7! With ' + timeLeft + ' seconds remaining!')
     startBtn.innerText = 'Start'
     startBtn.classList.remove('hide')
     questionContainerElement.classList.add('hide')
     nextBtn.classList.add('hide')
-    updateHighScore()
+  
     timerReset()
     clearInterval(interval)
+ 
+ 
    
     return
     }
     else {
+      resetState()
     startBtn.innerText = 'Restart'
     startBtn.classList.remove('hide')
     questionContainerElement.classList.add('hide')
     // nextBtn.classList.add('hide')
-    updateHighScore()
+ 
     timerReset()
     clearInterval(interval)
    
@@ -183,13 +187,13 @@ const questions = [
     `Question ${currentQuestionIndex + 1}/${questions.length}- ${shuffledQuestions[currentQuestionIndex].question}`;
 
     document.getElementById('answer1').innerText = shuffledQuestions[currentQuestionIndex].answers[0].text;
-    document.getElementById('answer1').dataset = shuffledQuestions[currentQuestionIndex].answers[0].correct;
+    document.getElementById('answer1').dataset.correct = shuffledQuestions[currentQuestionIndex].answers[0].correct;
     document.getElementById('answer2').innerText = shuffledQuestions[currentQuestionIndex].answers[1].text;
-    document.getElementById('answer2').dataset = shuffledQuestions[currentQuestionIndex].answers[1].correct;
+    document.getElementById('answer2').dataset.correct = shuffledQuestions[currentQuestionIndex].answers[1].correct;
     document.getElementById('answer3').innerText = shuffledQuestions[currentQuestionIndex].answers[2].text;
-    document.getElementById('answer3').dataset = shuffledQuestions[currentQuestionIndex].answers[2].correct;
+    document.getElementById('answer3').dataset.correct = shuffledQuestions[currentQuestionIndex].answers[2].correct;
     document.getElementById('answer4').innerText = shuffledQuestions[currentQuestionIndex].answers[3].text;
-    document.getElementById('answer4').dataset = shuffledQuestions[currentQuestionIndex].answers[3].correct;
+    document.getElementById('answer4').dataset.correct = shuffledQuestions[currentQuestionIndex].answers[3].correct;
     // currentQuestion.answers.forEach(answer => {
     //   // const button = document.createElement('button')
     //   // button.innerText = answer.text
@@ -199,9 +203,11 @@ const questions = [
       // }
       // button.addEventListener('click', selectAnswer)
       // answerButtonsElement.appendChild(button)
-      answerButtonsElement.querySelectorAll('.answer-button').forEach(button => {
-        button.disabled = false
-      })
+      document.getElementById('answer1').disabled = false
+      document.getElementById('answer2').disabled = false
+      document.getElementById('answer3').disabled = false
+      document.getElementById('answer4').disabled = false
+      
     }
 
   
@@ -217,18 +223,21 @@ const questions = [
   function selectAnswer(e) {
     
     const selectedButton = e.target
-    const correct = selectedButton.dataset.correct
-    alert(correct)
-    setStatusClass(document.body, correct)
-    answerButtonsElement.querySelectorAll('.answer-button').forEach(button => {
-      button.disabled = true
-    })
+    const answerIsCorrect = selectedButton.dataset.correct === 'true'
   
+    setStatusClass(document.body, answerIsCorrect)
+
+    document.getElementById('answer1').disabled = true
+    document.getElementById('answer2').disabled = true
+    document.getElementById('answer3').disabled = true
+    document.getElementById('answer4').disabled = true
     
   
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
    
-    } else {
+    } 
+    
+    else {
       startBtn.innerText = 'Restart'
       startBtn.classList.remove('hide')
       nextBtn.textContent = 'Done'
@@ -236,23 +245,16 @@ const questions = [
     }
   
   
-    if (correct) {
+    if (answerIsCorrect) {
       score += 1;
       scoreElement.textContent = "Score: " + score;
       document.getElementById("nextBtn").disabled = false;
-    
-
     
     }
     else {
       subtractTime()
       document.getElementById("nextBtn").disabled = false;
      
-
-  
-      // Array.from(answerButtonsElement.children).forEach(button => {
-      //   setStatusClass(button, button.dataset.correct)
-      // })
     }
 
   }
